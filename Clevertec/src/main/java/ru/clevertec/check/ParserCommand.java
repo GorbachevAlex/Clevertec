@@ -1,16 +1,15 @@
 package main.java.ru.clevertec.check;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
-public class ParserCommand {
-    public ParserCommand() {
-    }
+class ParserCommand {
+    private static final ArrayList<Product> productQuantities = new ArrayList<>();
+    private static int discountCardNumber;
+    private static double balanceDebitCard;
 
-    private  HashMap<Integer, Integer> productQuantities = new HashMap<>();
-    private  int discountCardNumber;
-    private  double balanceDebitCard;
-
-    public  void parseInput(String input) {
+    public static void parseInput(String input) {
         String[] arrayStrings = input.split(" ");
         for (String splitString : arrayStrings) {
             if (splitString.startsWith("discountCard=")) {
@@ -20,30 +19,34 @@ public class ParserCommand {
             } else {
                 String[] parts = splitString.split("-");
                 int productId = Integer.parseInt(parts[0]);
-                int quantity = Integer.parseInt(parts[1]);
-                productQuantities.put(productId, quantity);
+                int productQuantity = Integer.parseInt(parts[1]);
+                productQuantities.add(new Product(productId, productQuantity));
             }
         }
     }
 
-    public HashMap<Integer, Integer> getProductQuantities() {
+    public static ArrayList<Product> getProductQuantities() {
         return productQuantities;
     }
 
-    public int getDiscountCardNumber() {
+    public static ArrayList<Product> getCounterQuantitiesProduct(ArrayList<Product> productQuantities) {
+        List<Product> summedProducts = productQuantities.stream()
+                .collect(Collectors.groupingBy(Product::getProductId,
+                        Collectors.summingInt(Product::getProductQuantity)))
+                .entrySet().stream()
+                .map(entry -> new Product(entry.getKey(), entry.getValue()))
+                .toList();
+
+        return new ArrayList<>(summedProducts);
+    }
+
+    public static int getDiscountCardNumber() {
         return discountCardNumber;
     }
 
-    public double getBalanceDebitCard() {
+    public static double getBalanceDebitCard() {
         return balanceDebitCard;
     }
-
-    @Override
-    public String toString() {
-        return  "productQuantities=" + productQuantities +
-                ", discountCardNumber=" + discountCardNumber +
-                ", balanceDebitCard=" + balanceDebitCard +
-                '}';
-    }
 }
+
 
