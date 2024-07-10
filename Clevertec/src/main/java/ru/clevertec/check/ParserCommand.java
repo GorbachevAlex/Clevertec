@@ -9,11 +9,19 @@ class ParserCommand {
     private static int discountCardNumber;
     private static double balanceDebitCard;
 
-    public static void parseInput(String input) {
+    private ParserCommand() {
+    }
+
+    public static void parseInput(String input) throws CustomException {
         String[] arrayStrings = input.split(" ");
         for (String splitString : arrayStrings) {
             if (splitString.startsWith("discountCard=")) {
-                discountCardNumber = Integer.parseInt(splitString.substring("discountCard=".length()));
+                String str = (splitString.substring("discountCard=".length()));
+                if (str.equals("")) {
+                    discountCardNumber = 0;
+                } else {
+                    discountCardNumber = Integer.parseInt(splitString.substring("discountCard=".length()));
+                }
             } else if (splitString.startsWith("balanceDebitCard=")) {
                 balanceDebitCard = Double.parseDouble(splitString.substring("balanceDebitCard=".length()));
             } else {

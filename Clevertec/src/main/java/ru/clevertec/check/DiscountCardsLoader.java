@@ -6,14 +6,13 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.HashMap;
-import java.util.Map;
 
 class DiscountCardsLoader {
-    private DiscountCardsLoader() {
-    }
-
     private static HashMap<Integer, Cards> cards;
     private static final File file = Path.of("src", "main", "resources", "discountCards.csv").toFile();
+
+    private DiscountCardsLoader() {
+    }
 
     static HashMap<Integer, Cards> loadDiscountCard() throws IOException {
 

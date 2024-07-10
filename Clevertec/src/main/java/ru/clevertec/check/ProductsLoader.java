@@ -8,6 +8,9 @@ class ProductsLoader {
     private static HashMap<Integer, Product> products;
     private static final File file = Path.of("src", "main", "resources", "products.csv").toFile();
 
+    private ProductsLoader() {
+    }
+
     static HashMap<Integer, Product> loadProducts() throws IOException {
 
         products = new HashMap<>();
